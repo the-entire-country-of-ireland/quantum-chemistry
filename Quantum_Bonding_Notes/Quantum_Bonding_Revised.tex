@@ -1,0 +1,617 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.86in,headheight=16pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{graphicx,booktabs,array,siunitx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec,caption,hyperref,placeins}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue}
+\definecolor{deep}{RGB}{29,48,69}
+\definecolor{accent}{RGB}{28,101,150}
+\definecolor{muted}{RGB}{87,101,116}
+\definecolor{pale}{RGB}{239,246,249}
+\titleformat{\section}{\Large\bfseries\color{deep}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{deep}}{\thesubsubsection}{0.7em}{}
+\fancyhf{}\pagestyle{fancy}
+\fancyhead[L]{\small From atomic orbitals to quantum bonds}
+\fancyhead[R]{\small Graduate-level notes}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.3em,topsep=2pt,itemsep=2pt}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\braket}[2]{\langle #1\mid #2\rangle}
+\newcommand{\mel}[3]{\langle #1\lvert #2\rvert #3\rangle}
+\newcommand{\ha}{\,\mathrm{Ha}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\highlight}[1]{\par\smallskip\noindent\colorbox{pale}{\parbox{0.956\linewidth}{\strut #1\strut}}\smallskip\par}
+\newcommand{\plot}[3]{\begin{figure}[htbp]\centering\includegraphics[width=#2\linewidth]{figures/#1.png}\caption{#3}\label{fig:#1}\end{figure}}
+\newcommand{\rA}{r_A}\newcommand{\rB}{r_B}
+\renewcommand{\arraystretch}{1.14}
+\begin{document}
+\begin{center}
+{\fontsize{22}{27}\selectfont\bfseries From Atomic Orbitals to Quantum Bonds}\par\vspace{6pt}
+{\Large Heitler--London, tunneling, exchange, and polarized $\sigma$/$\pi$ bonds}\par\vspace{8pt}
+{\small A worked theoretical and numerical treatment using soluble one-dimensional models and hydrogenic three-dimensional orbitals}\par\vspace{6pt}
+{\small Revised notes \textbullet\ November 2026}
+\end{center}
+\vspace{8pt}
+\begin{abstract}
+Starting with neutral $\mathrm H_2$, we formulate the fermionic Heitler--London ansatz, separate spatial exchange from spin symmetry, and distinguish a variational configuration-space diagonalization from controlled degenerate perturbation theory. A two-position model clarifies why wavefunction overlap is not hopping. The one-electron $\mathrm H_2^+$ Coulomb problem and a solvable one-dimensional double-delta potential then provide explicit, distance-dependent hopping amplitudes through the identity $H_{ab}=\langle a\lvert H_B+V_A\rvert b\rangle$. A normalized Gaussian trial basis gives a separate worked variational calculation for \emph{the same} delta-well Hamiltonian. The interacting Hubbard dimer isolates singlet--triplet superexchange. Finally, normalized hydrogenic $2s$/$2p$ functions support quantitative two-center $sp^3$--$sp^3$ $\sigma$ and $p$--$p$ $\pi$ examples ($Z=1$), followed by model C--O ($Z_{\rm eff,C}=3.25$, $Z_{\rm eff,O}=4.55$) and C--H ($sp^3$--$1s$) bonds. Extended integrals and numerical methods are collected in appendices.
+\end{abstract}
+\tableofcontents
+\vspace{0.6em}
+\highlight{\textbf{Interpretation rule.} An overlap integral measures geometry of a chosen orbital basis; an off-diagonal Hamiltonian element measures coupling; an orbital-energy splitting is not a bond dissociation energy; and the Coulomb interaction does not act directly on spin. The spin dependence of a bond follows from fermionic antisymmetry and electronic correlations.}
+
+\section{Neutral $\mathrm H_2$: the Heitler--London starting point}
+\subsection{A genuine two-electron Hamiltonian}
+Fix two protons $A$ and $B$ separated by $R$ (Born--Oppenheimer approximation), and use atomic units $\hbar=m_e=e=a_0=1$. The \emph{physical} nonrelativistic Hamiltonian is
+\begin{equation}\label{eq:physicalH2}
+\hat H=\sum_{i=1}^{2}\left[-\tfrac12\nabla_i^2-\frac1{r_{iA}}-\frac1{r_{iB}}\right]+\frac1{r_{12}}+\frac1R.
+\end{equation}
+It commutes with the operator $P_{12}$ exchanging \emph{both} electron coordinates and spins. There is no separate attraction that belongs to ``electron 1'' or ``electron 2.''
+
+Let $a(\mathbf r)=\pi^{-1/2}\e^{-r_A}$ and $b(\mathbf r)=\pi^{-1/2}\e^{-r_B}$ be normalized hydrogenic $1s$ orbitals. Their overlap is $S(R)=\braket a b$; it is nonzero at finite $R$. The two \emph{labeled spatial assignments} are
+\begin{equation}
+A(1,2)=a(1)b(2),\qquad B(1,2)=b(1)a(2),\qquad \braket A B=S^2.
+\end{equation}
+Neither assignment by itself is a permitted two-electron fermionic state. To impose antisymmetry, introduce the spin singlet $\chi_s=[\alpha(1)\beta(2)-\beta(1)\alpha(2)]/\sqrt2$ and the three symmetric triplets $\chi_{t,m}$.
+
+\subsection{Spin dictates spatial symmetry, not the energetic ordering}
+The spatial combinations and full fermionic wavefunctions are
+\begin{equation}\label{eq:HLstates}
+\psi_{\pm}(1,2)=\frac{A(1,2)\pm B(1,2)}{\sqrt{2(1\pm S^2)}},\qquad
+\boxed{\Psi_s=\psi_+\chi_s,\quad\Psi_{t,m}=\psi_-\chi_{t,m}.}
+\end{equation}
+The singlet is antisymmetric in spin and symmetric in space; the triplet is symmetric in spin and antisymmetric in space. Consequently $\psi_-(\mathbf r,\mathbf r)=0$, an exchange node imposed by Pauli exclusion. The symmetric wavefunction need not vanish at coincident positions. No spin-dependent force was added.
+
+\plot{01_h2_atomic_orbital_axis}{0.96}{Hydrogenic $1s$ amplitudes along the bond axis and normalized symmetric/antisymmetric one-electron combinations. These are 3D orbitals shown as \emph{axial cuts}, not 1D normalized wavefunctions.}
+\plot{02_h2_exchange_nodes}{0.97}{Axial sections of the two-electron \emph{spatial} Heitler--London combinations, $\psi_\pm(z_1,z_2)$. Red/blue indicate opposite signs, not probabilities. The triplet's exchange node lies on $z_1=z_2$; the full nodal condition is $\mathbf r_1=\mathbf r_2$.}
+
+\subsection{The direct and exchange matrix elements}
+Define $D=\mel A{\hat H}A$ and $X=\mel A{\hat H}B$. Electron-exchange symmetry forces the projected matrices to have the form
+\begin{equation}\label{eq:HL-generalized}
+\mathsf H=\begin{pmatrix}D&X\\X&D\end{pmatrix},\quad
+\mathsf S=\begin{pmatrix}1&S^2\\S^2&1\end{pmatrix},\quad
+\mathsf H\mathbf c=E\mathsf S\mathbf c.
+\end{equation}
+The resulting \emph{variational} energies in the restricted covalent space are
+\begin{equation}\label{eq:HLenergies}
+\boxed{E_s=\frac{D+X}{1+S^2},\qquad E_t=\frac{D-X}{1-S^2},\qquad
+E_t-E_s=\frac{2(DS^2-X)}{1-S^4}.}
+\end{equation}
+At $R\to\infty$, $S\to0$ and both energies tend to $-1\ha$, the energy of two isolated H atoms. A true molecule is bound only when its \emph{total} minimum falls below that separated-fragment energy. The sign of $X$ \emph{alone} does not determine which spin state is favored; the overlap denominator and direct energy also enter.
+
+There is a terminological trap: $X=\mel{ab}{H}{ba}$ is an \emph{exchange matrix element between two configurations}, while $K_{ee}=\iint a(1)b(1)r_{12}^{-1}a(2)b(2)\,d1d2$ is specifically the positive two-electron Coulomb exchange integral. The former additionally contains one-electron Hamiltonian and nuclear terms; they are not interchangeable.
+
+\subsection{The covalent Heitler--London state versus a doubly occupied MO}
+Define a normalized bonding orbital $g=(a+b)/\sqrt{2(1+S)}$. Restricted closed-shell HF uses $g(1)g(2)\chi_s$. Its spatial product contains \emph{both} covalent terms $ab+ba$ and ionic terms $aa+bb$, with constrained coefficients. By contrast, Eq.~\eqref{eq:HLstates} contains only the covalent assignment pair. At dissociation, the latter naturally gives one electron at each nucleus, whereas a single closed-shell bonding MO retains undesired ionic weight. The distinction is between \emph{many-electron wavefunctions}, not merely two orbital drawing conventions.
+
+\section{Overlap, hopping, and degenerate perturbation theory}
+\subsection{Two position states: the bare minimum model}
+For one electron, begin with \emph{orthonormal} discrete states $\{\ket L,\ket R\}$ representing sites, not spatially continuous delta functions. Choose two normalized, nonorthogonal \emph{atomic trial vectors}
+\begin{equation}\label{eq:toy-epsilon}
+\ket a=\frac{\ket L+\epsilon\ket R}{\sqrt{1+\epsilon^2}},\qquad
+\ket b=\frac{\epsilon\ket L+\ket R}{\sqrt{1+\epsilon^2}},\qquad
+S=\braket a b=\frac{2\epsilon}{1+\epsilon^2}.
+\end{equation}
+This $\epsilon$ measures leakage \emph{relative to the chosen orthogonal site basis}. It does not determine an energy. A spin-independent effective Hamiltonian with explicitly specified hopping is
+\begin{equation}\label{eq:toyh}
+H_{\rm site}=\begin{pmatrix}E_0&-t\\-t&E_0\end{pmatrix}_{L,R},\qquad
+\ket{\pm}=\frac{\ket L\pm\ket R}{\sqrt2},\quad E_\pm=E_0\mp t.
+\end{equation}
+For this special symmetric parameterization, $(a\pm b)/\sqrt{2(1\pm S)}=(L\pm R)/\sqrt2$; the \emph{same} delocalized eigenvectors follow for any $\epsilon$. If $t=0$ the states remain degenerate regardless of $S$. Hence \emph{overlap does not cause splitting without a Hamiltonian coupling}.
+\plot{04_discrete_overlap_and_hopping}{0.93}{Left: leakage $\epsilon$ and atomic overlap $S$ are geometrical properties of a basis. Right: the eigenvalue splitting of the orthogonal site Hamiltonian is set by the independent parameter $t$.}
+
+\subsection{Why the off-diagonal element needs overlap correction}
+In a general normalized, nonorthogonal pair $\{a,b\}$, write $H_{aa}=H_{bb}=\alpha$, $H_{ab}=\beta$, $\braket a b=S$. The generalized eigenproblem gives
+\begin{equation}
+E_\pm=\frac{\alpha\pm\beta}{1\pm S},\quad
+\boxed{t_{\rm orth}=\frac{E_--E_+}{2}=\frac{\alpha S-\beta}{1-S^2}.}
+\label{eq:orthhop}
+\end{equation}
+This is the hopping coefficient after symmetric (L\"owdin) orthogonalization. In particular $H=E_0 I$ gives $\beta=E_0S\neq0$ but $t_{\rm orth}=0$. The ordinary matrix element $\beta$ is therefore \emph{not} itself the observable tunneling amplitude. For unequal sites, Eq.~\eqref{eq:unequal-lowdin} generalizes the construction.
+
+\subsection{Where perturbation theory does and does not enter}
+Standard degenerate perturbation theory starts with \emph{one} self-adjoint $H_0$ whose eigenstates span an orthonormal degenerate eigenspace $P$, followed by $H(\lambda)=H_0+\lambda V$. First-order corrections come from diagonalizing $PVP$. For two electrons, $P$ must be a subspace of the \emph{antisymmetric} spin-space Hilbert space, and $H_0,V$ must respect exchange symmetry. The two-center Coulomb or double-delta calculations below instead use exact isolated-atom orbitals as a \emph{finite variational basis} for a separation-dependent molecular Hamiltonian. Their large-$R$ weak-coupling limit has a perturbative interpretation, but the finite-$R$ generalized eigenproblem is a Rayleigh--Ritz calculation, not automatically a controlled power series in $R^{-1}$.
+
+\section{$\mathrm H_2^+$: physical Coulomb integrals and the useful split $H=H_B+V_A$}
+Before returning to two electrons, it helps to derive $t(R)$ for one electron using a real Coulomb potential. Write
+\begin{equation}\label{eq:h2plus-split}
+\hat h=-\tfrac12\nabla^2-\frac1{r_A}-\frac1{r_B}
+=\underbrace{\left(-\tfrac12\nabla^2-\frac1{r_B}\right)}_{\hat h_B}+\underbrace{\left(-\frac1{r_A}\right)}_{V_A}.
+\end{equation}
+\emph{Do not} write $h=h_A+h_B$: this would count $T=-\frac12\nabla^2$ twice. Since $h_Bb=-\frac12b$,
+\begin{equation}\label{eq:habsplit}
+\boxed{H_{ab}=\mel a{h_B+V_A}b=E_B\braket a b+\mel a{V_A}b.}
+\end{equation}
+The first contribution comes from acting with the exactly solvable right-atom Hamiltonian; the second is the new attraction from the left proton. It is valid only because $b$ is genuinely an eigenfunction of $h_B$.
+
+For normalized $1s$ orbitals the required integrals can be done analytically (Appendix~\ref{app:1s}):
+\begin{align}\label{eq:h2plus-integrals}
+S(R)&=\int ab\,d^3r=\e^{-R}(1+R+R^2/3),\\
+J_N(R)&=\int\frac{|a|^2}{r_B}\,d^3r=\frac{1-(1+R)\e^{-2R}}{R},\\
+K_N(R)&=\int\frac{ab}{r_A}\,d^3r=(1+R)\e^{-R}.\nonumber
+\end{align}
+The diagonal and off-diagonal Hamiltonian elements are
+\begin{equation}\label{eq:h2plus-matrix}
+\alpha=-\tfrac12-J_N,\qquad\beta=-\tfrac12 S-K_N.
+\end{equation}
+Therefore, after accounting for overlap,
+\begin{equation}\label{eq:h2plus-t}
+\boxed{t(R)=\frac{\alpha S-\beta}{1-S^2}=\frac{K_N-J_NS}{1-S^2}.}
+\end{equation}
+The normalized MO energies are $E_\pm^{(e)}=(\alpha\pm\beta)/(1\pm S)$. The \emph{total} one-electron $\mathrm H_2^+$ energies include nuclear repulsion: $E_\pm^{\mathrm{total}}=E_\pm^{(e)}+1/R$. At $R=2a_0$, $S=0.586453$ and $t=0.196459\ha$, but $E_+^{\mathrm{total}}=-0.553771\ha$. The total binding at that fixed separation relative to $\mathrm H+\mathrm H^+$ is only $0.053771\ha$; it is not equal to $t$.
+\plot{03_h2plus_overlap_energy}{0.97}{Hydrogenic fixed-$1s$ $\mathrm H_2^+$ variational model. The four positive quantities on the left play different roles; the energy plot on the right includes $1/R$ proton repulsion.}
+\highlight{\textbf{Why this is useful later.} The identity $H_{ab}=E_BS+\langle a\lvert V_A\rvert b\rangle$ works for \emph{any} atomic eigenfunction $b$, including hydrogenic $2s$, $2p$, and an $sp^3$ combination within a degenerate $n=2$ manifold. It will fail as an equality with $E_BS$ for an arbitrary Gaussian trial function that is not an eigenstate of $H_B$.}
+\FloatBarrier
+
+\section{An exactly solvable one-dimensional molecule: two attractive delta wells}
+\subsection{An isolated ``atom'' with an exact exponential orbital}
+Use the physically localized one-dimensional Hamiltonian
+\begin{equation}
+\hat h_A=-\frac{\hbar^2}{2m}\frac{d^2}{dx^2}-g\delta(x+R/2),\quad
+\hat h_B=-\frac{\hbar^2}{2m}\frac{d^2}{dx^2}-g\delta(x-R/2),\quad g>0.
+\end{equation}
+Each has an \emph{exact} bound eigenstate with $\kappa=mg/\hbar^2$:
+\begin{equation}\label{eq:delta-atoms}
+a(x)=\sqrt\kappa\,\e^{-\kappa|x+R/2|},\quad
+b(x)=\sqrt\kappa\,\e^{-\kappa|x-R/2|},\quad
+E_0=-\frac{\hbar^2\kappa^2}{2m}.
+\end{equation}
+The inverse-potential idea is rigorous here in the distributional sense: the derivative jump $\psi'(x_A^+)-\psi'(x_A^-)=-2\kappa\psi(x_A)$ produces the attractive delta function. The normalized atomic overlap is
+\begin{equation}\label{eq:delta-overlap}
+\boxed{S(R)=\int a(x)b(x)\,dx=(1+\kappa R)\e^{-\kappa R}.}
+\end{equation}
+
+\subsection{Full double well: exact finite-$R$ states}
+The actual molecular Hamiltonian is $\hat h_R=T+V_A+V_B=h_B+V_A$, \emph{not} $h_A+h_B$. Its even and odd bound states are
+\begin{equation}\label{eq:delta-exact}
+\boxed{\psi_\pm^{\rm exact}(x;R)=N_\pm\Big(\e^{-q_\pm|x+R/2|}\pm\e^{-q_\pm|x-R/2|}\Big),}
+\end{equation}
+where $E_\pm=-\hbar^2q_\pm^2/(2m)$ and the jump conditions imply
+\begin{equation}\label{eq:delta-transcendental}
+\boxed{q_+=\kappa(1+\e^{-q_+R}),\qquad q_-=\kappa(1-\e^{-q_-R}).}
+\end{equation}
+The normalization is $N_\pm^2=q_\pm/[2\{1\pm(1+q_\pm R)\e^{-q_\pm R}\}]$. The odd \emph{bound} state exists only for $\kappa R>1$; otherwise the odd sector has no discrete normalizable eigenstate.
+\plot{05_delta_exact_vs_lcao}{0.97}{Numerically solved exact double-delta eigenstates (solid) compared to normalized fixed-$\kappa$ LCAO combinations (dashed), at three separations. Here $\hbar=m=g=\kappa=1$. All plotted states exist because $R>1$.}
+\plot{06_delta_decay_energies}{0.97}{The exact decay constants and energies. The two wells become independent as $R\to\infty$, while the odd bound level reaches the continuum at $R=1/\kappa$.}
+
+\subsection{A completely explicit origin for hopping}
+Use the right-well eigenvalue equation $h_Bb=E_0b$. Our preferred split immediately gives
+\begin{align}
+H_{ab}&=\mel a{h_B+V_A}b=E_0S-g\,a(-R/2)b(-R/2)\notag\\
+&=\boxed{E_0S-g\kappa\e^{-\kappa R}},\label{eq:delta-hab}\\
+H_{aa}&=\mel a{h_A+V_B}a=\boxed{E_0-g\kappa\e^{-2\kappa R}}.\label{eq:delta-haa}
+\end{align}
+The resulting \emph{projected} hopping coefficient is
+\begin{equation}\label{eq:delta-t}
+\boxed{t_{\rm proj}(R)=\frac{H_{aa}S-H_{ab}}{1-S^2}
+=g\kappa\frac{\e^{-\kappa R}-S\e^{-2\kappa R}}{1-S^2}.}
+\end{equation}
+For $\kappa R\gg1$, $t_{\rm proj}\sim g\kappa\e^{-\kappa R}=(\hbar^2\kappa^2/m)\e^{-\kappa R}$. This agrees at leading order with half the exact even--odd splitting obtained from Eq.~\eqref{eq:delta-transcendental}. The \emph{finite-$R$ projected} splitting and the \emph{exact continuum} splitting are different quantities because the fixed atomic LCAO space does not allow $q_\pm$ to relax.
+
+\section{A Gaussian basis as a genuine variational worked example}
+\subsection{First fix the Hamiltonian; then choose an imperfect trial function}
+Keep the \emph{same} attractive delta Hamiltonian $h_A=-\frac12\partial_x^2-g\delta(x-x_A)$, now in atomic units. Take a normalized Gaussian with width $\sigma$:
+\begin{equation}\label{eq:gauss}
+g_A(x;\sigma)=(2\pi\sigma^2)^{-1/4}\exp[-(x+R/2)^2/(4\sigma^2)],\quad
+g_B(x;\sigma)=g_A(-x;\sigma).
+\end{equation}
+Each orbital is normalized \emph{independently of $R$}, and their overlap follows from elementary Gaussian integration:
+\begin{equation}\label{eq:gauss-S}
+\boxed{S_G(R,\sigma)=\braket{g_A}{g_B}=\exp[-R^2/(8\sigma^2)].}
+\end{equation}
+Unlike the exponential delta-well ground state, the Gaussian is \emph{not} an eigenfunction of the delta Hamiltonian. That is fine: the Rayleigh--Ritz principle applies to any normalized trial state.
+
+For a \emph{single} delta well, $\langle T\rangle=1/(8\sigma^2)$ and $\langle-g\delta(x-x_A)\rangle=-g/(\sqrt{2\pi}\sigma)$, so
+\begin{equation}\label{eq:gauss-variational}
+\boxed{E_G(\sigma)=\frac1{8\sigma^2}-\frac{g}{\sqrt{2\pi}\sigma},\quad
+\sigma_{\rm opt}=\frac{\sqrt{2\pi}}{4g},\quad E_G^{\min}=-\frac{g^2}{\pi}.}
+\end{equation}
+Compare the exact isolated-delta energy $E_{\rm exact}=-g^2/2$. The variational value is higher, as it must be: $-1/\pi\simeq-0.3183>-0.5$ at $g=1$.
+
+\subsection{Gaussian matrix elements in the two-center Hamiltonian}
+The kinetic cross integral is $\langle g_A\lvert T\rvert g_B\rangle=S_G(1/8\sigma^2-R^2/32\sigma^4)$. The two delta potentials give identical cross contributions. The full matrices are therefore
+\begin{align}\label{eq:gauss-mat}
+H_{AA}^{(G)}&=\frac1{8\sigma^2}-\frac{g}{\sqrt{2\pi}\sigma}\Big(1+\e^{-R^2/(2\sigma^2)}\Big),\\
+H_{AB}^{(G)}&=S_G\Big(\frac1{8\sigma^2}-\frac{R^2}{32\sigma^4}\Big)
+-\frac{2g}{\sqrt{2\pi}\sigma}\e^{-R^2/(4\sigma^2)}.\nonumber
+\end{align}
+Thus $E_\pm^{(G)}(R,\sigma)=[H_{AA}^{(G)}\pm H_{AB}^{(G)}]/[1\pm S_G]$, which can be minimized over $\sigma$ \emph{separately in each parity sector}. At $g=1$, $R=2.5$, the optimized Gaussian energies are $E_+^{(G)}\simeq-0.42107$ and $E_-^{(G)}\simeq-0.19597$, both above the corresponding exact bound-state levels.
+\plot{07_gaussian_variational}{0.97}{Left: the Gaussian is a legitimate variational approximation to an isolated delta well, not an exact eigenstate. Right: independently width-optimized even and odd Gaussian LCAO states compared with the exact double-delta bound states at $R=2.5$.}
+
+\subsection{Precisely when can we write $H_{ab}=E_B S+\langle a\lvert V_A\rvert b\rangle$?}
+The operator decomposition $H=H_B+V_A$ is \emph{always} true for the two-well Hamiltonian. But the next step requires $H_B\ket b=E_B\ket b$. For a Gaussian trial state $\ket{g_B}$,
+\begin{equation}
+\mel{g_A}{H}{g_B}=E_BS_G+\mel{g_A}{V_A}{g_B}
++\underbrace{\mel{g_A}{H_B-E_B}{g_B}}_{\text{nonzero variational residual}}.
+\end{equation}
+If we silently discard the last term, we incorrectly treat a Gaussian trial orbital as an atomic eigenstate. This is the essential distinction between an \emph{exactly soluble reference Hamiltonian} and a \emph{variational basis}.
+\FloatBarrier
+\section{Exchange interactions: what actually favors a singlet?}
+\subsection{Two distinct mechanisms with opposite tendencies}
+The phrase \emph{exchange interaction} is overloaded. Given two \emph{orthogonal} localized orbitals $a,b$, the repulsive Coulomb operator alone contributes
+\begin{equation}
+J_{ee}=\iint\frac{|a(1)|^2|b(2)|^2}{r_{12}}\,d1d2,\qquad
+K_{ee}=\iint\frac{a^*(1)b(1)b^*(2)a(2)}{r_{12}}\,d1d2\geq0.
+\end{equation}
+Its singlet and triplet expectations in the symmetric/antisymmetric \emph{covalent spatial} states are $J_{ee}+K_{ee}$ and $J_{ee}-K_{ee}$. Thus \emph{direct Coulomb exchange} by itself favors a triplet, with $E_t-E_s=-2K_{ee}$. This is related to Hund's-rule exchange. It does \emph{not} mean that the physical $\mathrm H_2$ triplet is the ground state; electron--nucleus attraction, kinetic delocalization, orbital overlap, and virtual charge transfer all participate in the full problem.
+
+For spatially overlapping $a,b$, one must retain the $1\pm S^2$ normalization in Eq.~\eqref{eq:HLenergies}. The difference between an exchange \emph{integral} and a singlet--triplet \emph{energy splitting} is fundamental.
+
+\subsection{The Hubbard dimer: legitimate degenerate perturbation theory with fermions}
+Pass to an \emph{orthonormal} localized site basis, and introduce two electrons through fermionic creation operators $c^\dagger_{A\sigma},c^\dagger_{B\sigma}$. The exact finite-dimensional Hamiltonian is
+\begin{equation}\label{eq:hubbard}
+\hat H=-t\sum_{\sigma=\uparrow,\downarrow}(c^\dagger_{A\sigma}c_{B\sigma}+c^\dagger_{B\sigma}c_{A\sigma})
++U\sum_{j=A,B}n_{j\uparrow}n_{j\downarrow},\qquad U>0.
+\end{equation}
+The covalent sector (one electron per site) contains one properly antisymmetrized singlet and three triplets. The singlet and symmetric ionic state can be written in first-quantized spatial notation, each with singlet spin:
+\begin{equation}
+\ket C_s=\frac{\ket{AB}+\ket{BA}}{\sqrt2},\qquad
+\ket I_s=\frac{\ket{AA}+\ket{BB}}{\sqrt2},\qquad
+\ket C_t=\frac{\ket{AB}-\ket{BA}}{\sqrt2}\quad(\text{triplet spin}).
+\end{equation}
+Let $T$ denote the hopping term. Its spatial action is $T\ket{AB}=-t(\ket{AA}+\ket{BB})$ and the same for $\ket{BA}$. Consequently,
+\begin{equation}\label{eq:hubbard-2t}
+\boxed{T\ket C_s=-2t\ket I_s,\qquad T\ket C_t=0.}
+\end{equation}
+There is no singlet--triplet \emph{matrix element}: their spin wavefunctions are orthogonal, and the spin-independent $T$ cannot change total spin. The singlet instead couples to a \emph{higher-energy state in its own spin sector}; the triplet cannot make the corresponding hop.
+
+Choose $H_0=U\sum_jn_{j\uparrow}n_{j\downarrow}$ and $V=T$. Now the zero-energy covalent singlet and three triplets are \emph{exactly degenerate eigenstates of an exchange-symmetric $H_0$}. Moreover, $PVP=0$ in that four-state covalent manifold. Hence first-order degenerate perturbation theory yields no splitting. At second order,
+\begin{equation}\label{eq:hubbard-second}
+E_s^{(2)}=\frac{|\mel{I_s}{T}{C_s}|^2}{0-U}=-\frac{4t^2}{U},\quad
+E_t^{(2)}=0,\quad
+\boxed{J_{\mathrm{AF}}\equiv E_t-E_s\simeq\frac{4t^2}{U}>0.}
+\end{equation}
+The exact singlet matrix in the basis $\{\ket C_s,\ket I_s\}$ is
+\begin{equation}\label{eq:hubbard-exact}
+H_s=\begin{pmatrix}0&-2t\\-2t&U\end{pmatrix},\qquad
+E_s^-=\frac{U-\sqrt{U^2+16t^2}}{2},\quad E_t=0.
+\end{equation}
+The other singlets have energies $(U+\sqrt{U^2+16t^2})/2$ and $U$; the latter is the antisymmetric ionic configuration. In the correlated ground state, the ionic probability is $p_I=\tfrac12[1-U/\sqrt{U^2+16t^2}]$.
+\plot{08_hubbard_exchange}{0.96}{The exactly solvable two-electron Hubbard dimer. The energy gain begins at order $t^2/U$, and the associated ionic admixture grows as charge-transfer configurations become accessible.}
+
+\subsection{Effective spin Hamiltonian and the sign of exchange}
+Within the singly occupied subspace, $\bm S_A\cdot\bm S_B=-3/4$ in the singlet and $+1/4$ in the triplets. Up to a common energy shift,
+\begin{equation}\label{eq:heisenberg}
+\boxed{H_{\rm spin}=J_{\rm eff}\left(\bm S_A\cdot\bm S_B-\tfrac14\right),\quad J_{\rm eff}=\frac{4t^2}{U}\quad\text{(Hubbard, second order)}.}
+\end{equation}
+The repulsion-only direct-exchange contribution would instead yield $J_{\rm direct}\sim-2K_{ee}$ in a simple orthogonal-orbital approximation. A broader model can contain both, schematically $J_{\rm eff}\approx4t^2/U-2K_{ee}+\cdots$; the ellipsis includes intersite Coulomb, correlated hopping, orbital relaxation, and other terms. These contributions must be derived from \emph{one consistently projected Hamiltonian} to avoid double counting.
+
+\highlight{\textbf{Connection to $\mathrm H_2$.} The Heitler--London splitting in Eq.~\eqref{eq:HLenergies} is obtained by diagonalizing a covalent two-configuration variational space. The Hubbard superexchange $4t^2/U$ comes from \emph{second-order} excursions into ionic states that the simplest Heitler--London ansatz excludes. Both are manifestations of fermionic exchange symmetry, but they are not the same approximation or the same integral.}
+\FloatBarrier
+
+\section{A common three-dimensional framework for $\sigma$, $\pi$, and polarized bonds}
+\subsection{Hydrogenic $n=2$ orbitals as a controlled shape basis}
+Take a hydrogenic one-electron reference Hamiltonian $h_Z=-\frac12\nabla^2-Z/r$ with effective charge/exponent $Z>0$. Its real, normalized $n=2$ orbitals are
+\begin{align}\label{eq:n2-orbitals}
+\phi_{2s}^{Z}(\mathbf r)&=C_Z(2-Zr)\e^{-Zr/2},\\
+\phi_{2p_z}^{Z}(\mathbf r)&=C_Z\,Zz\e^{-Zr/2},\qquad
+\phi_{2p_x}^{Z}(\mathbf r)=C_Z\,Zx\e^{-Zr/2},\quad C_Z=\sqrt{\frac{Z^3}{32\pi}}.\nonumber
+\end{align}
+For a \emph{literal} one-electron Coulomb problem these are degenerate eigenfunctions with energy $E_2=-Z^2/8$; therefore any normalized linear combination of $2s$ and $2p$ is also an exact atomic eigenstate. The radial node of $2s$ will produce nontrivial signed cancellations in some overlaps. These are \emph{hydrogenic} $n=2$ orbitals, not the node-free Slater-type approximate ``2s'' functions sometimes used in minimal-basis chemistry.
+
+A normalized ideal $sp^3$ hybrid pointing along a unit direction $\hat n$ is
+\begin{equation}\label{eq:sp3}
+\boxed{h_{Z,\hat n}=\frac12\left(\phi_{2s}^{Z}+\sqrt3\,\phi_{2p_{\hat n}}^{Z}\right).}
+\end{equation}
+The $1/4$ $s$ weight and $3/4$ $p$ weight follow from orthogonality of the atomic functions. This is a \emph{chosen orbital basis}, not a theorem that real C or O bonds must have exactly $25\%$ $s$ character.
+
+\subsection{The matrix elements we will actually calculate}
+Place center $A$ at $z=-R/2$ and $B$ at $z=+R/2$. We choose normalized trial orbitals $a(\mathbf r)$ and $b(\mathbf r)$ centered on the corresponding nuclei. For the explicit \emph{model} Hamiltonian
+\begin{equation}\label{eq:charge-H}
+h=-\tfrac12\nabla^2-\frac{Z_A}{r_A}-\frac{Z_B}{r_B}=h_B+V_A,\qquad V_A=-\frac{Z_A}{r_A},
+\end{equation}
+assume $h_Aa=E_Aa$ and $h_Bb=E_Bb$; the latter holds for the hydrogenic choices in Eq.~\eqref{eq:n2-orbitals}. Define
+\begin{equation}\label{eq:integral-defs}
+\begin{aligned}
+S&=\int a b\,d^3r,\quad K_A=\int\frac{ab}{r_A}\,d^3r,\quad K_B=\int\frac{ab}{r_B}\,d^3r,\\
+J_A&=\int\frac{|a|^2}{r_B}\,d^3r,\qquad J_B=\int\frac{|b|^2}{r_A}\,d^3r.
+\end{aligned}
+\end{equation}
+The projected $2\times2$ matrices follow with \emph{no numerical differentiation}:
+\begin{equation}\label{eq:general-hab}
+\boxed{H_{AA}=E_A-Z_BJ_A,\quad H_{BB}=E_B-Z_AJ_B,\quad
+H_{AB}=E_BS-Z_AK_A=E_AS-Z_BK_B.}
+\end{equation}
+The equality of the two expressions for $H_{AB}$ is a valuable numerical check. The nuclear repulsion $Z_AZ_B/R$ is \emph{not} included in these electronic elements; it would enter as a multiple of the overlap matrix. If $Z_A,Z_B$ are effective rather than bare charges, that nuclear term is not physically meaningful without a specified core model.
+
+\subsection{Orthogonalization: the meaningful level mismatch and hopping}
+When $S\ne0$, define the symmetrically orthogonalized operator $\widetilde H=\mathsf S^{-1/2}\mathsf H\mathsf S^{-1/2}$. In its orthonormal site representation,
+\begin{equation}\label{eq:unequal-lowdin}
+\widetilde H=\begin{pmatrix}\varepsilon_A&-t\\-t&\varepsilon_B\end{pmatrix},\qquad
+\boxed{t=\frac{S(H_{AA}+H_{BB})/2-H_{AB}}{1-S^2},\quad
+\Delta=\varepsilon_B-\varepsilon_A=\frac{H_{BB}-H_{AA}}{\sqrt{1-S^2}}.}
+\end{equation}
+This defines a \emph{signed} $t$, whose sign changes under a phase reversal $b\to-b$. The eigenvalues and normalized lower-state site weights are
+\begin{equation}\label{eq:polar-weights}
+E_\pm=\bar\varepsilon\pm\sqrt{(\Delta/2)^2+t^2},\quad
+w_B^{(-)}=\tfrac12\left(1-\frac{\Delta}{\sqrt{\Delta^2+4t^2}}\right),\quad
+w_A^{(-)}=1-w_B^{(-)}.
+\end{equation}
+These \emph{L\"owdin-site weights} are convention dependent; they are not measured partial charges. Still, they make the distinct roles of overlap, hopping, and electronegativity-like energy mismatch mathematically transparent.
+
+\section{Worked equal-charge $sp^3$--$sp^3$ $\sigma$ bond ($Z_A=Z_B=1$)}
+\subsection{Specify the oriented hybrids and their phases}
+Take both atomic references as hydrogenic $n=2$ orbitals with $Z=1$. At $z_A=-R/2$ define $z_A=z+R/2$ and $r_A=\sqrt{\rho^2+z_A^2}$; define $z_B=z-R/2$ similarly. Two hybrids pointing \emph{toward each other} are
+\begin{equation}\label{eq:sigma-hybrids}
+\boxed{a_\sigma=\frac{\phi_{2s,A}+\sqrt3\phi_{2p_z,A}}2
+=\frac{C_1}{2}\e^{-r_A/2}\big[(2-r_A)+\sqrt3z_A\big],}
+\end{equation}
+\begin{equation}
+\boxed{b_\sigma=\frac{\phi_{2s,B}-\sqrt3\phi_{2p_z,B}}2
+=\frac{C_1}{2}\e^{-r_B/2}\big[(2-r_B)-\sqrt3z_B\big].}
+\end{equation}
+The opposite sign on $p_{z,B}$ simply points B's preferred lobe toward A. Note that each orbital retains an inner/outer radial sign structure inherited from hydrogenic $2s$.
+
+\subsection{Expand the overlap into familiar $s$ and $p$ cross terms}
+The overlap is not ``the overlap of two cones'' but a definite three-dimensional integral:
+\begin{equation}\label{eq:sigma-overlap}
+\begin{aligned}
+S_\sigma&=\int a_\sigma b_\sigma\,d^3r\\
+&=\frac14\left(S_{ss}-\sqrt3 S_{s,p_B}+\sqrt3 S_{p_A,s}-3S_{p_A,p_B}\right),
+\end{aligned}
+\end{equation}
+where $S_{\mu_A,\nu_B}=\int\phi_{\mu,A}\phi_{\nu,B}\,d^3r$. The same linear expansion applies to $K_A$ and $K_B$ after inserting $1/r_A$ or $1/r_B$ inside each elemental integral. This is precisely how one uses a hybridized-orbital basis without asserting that the coefficients of the final molecular eigenstates are known a priori.
+
+For this $Z=1$ model, $E_A=E_B=-1/8$. We use Eq.~\eqref{eq:general-hab} and the two-center quadrature in Appendix~\ref{app:prolate} to evaluate $S_\sigma,J_\sigma,K_\sigma$ and the resulting $t_\sigma$. At $R=5a_0$:
+\begin{equation}\label{eq:sigma-number}
+\boxed{S_\sigma=-0.095004,\quad H_{AA}=-0.271259,\quad H_{AB}=+0.003010,\quad t_\sigma=0.022968\ha.}
+\end{equation}
+The low/high electronic eigenvalues are $-0.296410\ha$ and $-0.250473\ha$ within this two-orbital basis. In this particular phase convention the $2s$ radial node makes the \emph{signed} atomic overlap negative. We therefore must not blindly call $a+b$ the bonding combination: the ordering follows the generalized eigenproblem, not a picture of outward-facing lobes.
+
+\subsection{What about the two-electron $\sigma$ bond?}
+With one electron initially in each hybrid, the covalent Heitler--London states are $[a_\sigma(1)b_\sigma(2)\pm b_\sigma(1)a_\sigma(2)]/\sqrt{2(1\pm S_\sigma^2)}$ times the requisite singlet or triplet spin state. Define
+\begin{equation}
+D_\sigma=H_{AA}+H_{BB}+J_{ee,\sigma}+V_{NN},\quad
+X_\sigma=S_\sigma(H_{AB}+H_{BA})+K_{ee,\sigma}+V_{NN}S_\sigma^2.
+\end{equation}
+Here $J_{ee,\sigma}$ and $K_{ee,\sigma}$ are the direct and exchange \emph{two-electron} repulsion integrals obtained by substituting $a_\sigma,b_\sigma$ into Appendix~\ref{app:twoelectron}. Hence $E_s=(D_\sigma+X_\sigma)/(1+S_\sigma^2)$ and $E_t=(D_\sigma-X_\sigma)/(1-S_\sigma^2)$. We do \emph{not} mistake the one-electron splitting $2t_\sigma$ for a two-electron exchange splitting or for the bond dissociation energy. In this deliberately excited $n=2$, $Z=1$ model, no physically meaningful real-atom dissociation energy is claimed.
+\FloatBarrier
+
+\section{Worked equal-charge $p$--$p$ $\pi$ bond ($Z_A=Z_B=1$)}
+\subsection{Transverse orbitals and the nodal plane}
+Keep the internuclear axis along $z$ but choose $2p_x$ on both centers, with the same global phase convention:
+\begin{equation}\label{eq:pi-orbitals}
+\boxed{a_\pi=C_1\,x\e^{-r_A/2},\qquad b_\pi=C_1\,x\e^{-r_B/2}.}
+\end{equation}
+The $\pi$ nodal plane $x=0$ \emph{contains the bond axis}. The same-sign combinations of corresponding lobes above and below this plane describe lateral bonding; the overall sign of either orbital is arbitrary. The distinction from a $\sigma$ bond is the angular character of the orbitals, not the existence of a different Coulomb law.
+\plot{09_sigma_pi_orbital_shapes}{0.97}{Signed $xz$-plane sections of the two bond-directed $sp^3$ hybrids and the two transverse $p_x$ orbitals, all with $Z=1$ and $R=5a_0$. Their shapes, angular nodes, and radial sign changes explain differences between $\sigma$ and $\pi$ overlap.}
+
+\subsection{An explicit radial-angular integral for $S_\pi$}
+Using cylindrical coordinates $x=\rho\cos\varphi$, $d^3r=\rho\,d\rho\,d\varphi\,dz$ and $r_{A,B}=\sqrt{\rho^2+(z\pm R/2)^2}$, we obtain
+\begin{align}\label{eq:pi-overlap}
+S_\pi&=C_1^2\int x^2\e^{-(r_A+r_B)/2}\,d^3r\\
+&=\boxed{\pi C_1^2\int_{-\infty}^{\infty}\!dz\int_0^\infty\!\rho^3\e^{-(r_A+r_B)/2}\,d\rho,}\nonumber
+\end{align}
+where $\int_0^{2\pi}\cos^2\varphi\,d\varphi=\pi$. The corresponding cross-attraction integral is simply the same integrand divided by $r_A$:
+\begin{equation}\label{eq:pi-K}
+K_{A,\pi}=\pi C_1^2\int_{-\infty}^{\infty}\!dz\int_0^\infty\!\frac{\rho^3\e^{-(r_A+r_B)/2}}{r_A}\,d\rho.
+\end{equation}
+Then $H_{AB,\pi}=E_2 S_\pi-K_{A,\pi}$, $H_{AA,\pi}=E_2-J_{A,\pi}$, and $t_\pi$ follows from Eq.~\eqref{eq:orthhop}.
+
+At the \emph{same} $R=5a_0$ used in the $\sigma$ example, numerical quadrature gives
+\begin{equation}\label{eq:pi-number}
+\boxed{S_\pi=+0.578015,\quad H_{AA}=-0.283320,\quad H_{AB}=-0.186829,\quad t_\pi=0.034638\ha.}
+\end{equation}
+The two projected electronic energies are $-0.297937\ha$ and $-0.228661\ha$. The $\pi$ overlap exceeds the $sp^3$--$sp^3$ overlap \emph{in this particular hydrogenic $n=2$, $Z=1$ model}. That is a consequence of the unusually diffuse hydrogenic $2p$ shapes and cancellation in the $2s$-containing hybrids, \emph{not} a general claim that $\pi$ bonds are stronger than $\sigma$ bonds.
+
+For two electrons, the same Heitler--London formulas hold after substituting $a_\pi,b_\pi$. The exchange repulsion integral contains a factor $x_1^2x_2^2\e^{-(r_{1A}+r_{1B}+r_{2A}+r_{2B})/2}/r_{12}$; its angular/nodal structure differs significantly from the $sp^3$--$sp^3$ case. The explicit six-dimensional integrals are in Appendix~\ref{app:twoelectron}.
+\plot{10_equal_charge_sigma_pi_coupling}{0.97}{Signed overlap and orthogonalized hopping for equal-$Z=1$ $sp^3$--$sp^3$ $\sigma$ and $p_x$--$p_x$ $\pi$ basis pairs. Overlap and hopping do not have the same distance dependence or even necessarily the same sign convention.}
+\plot{11_sigma_pi_levels}{0.97}{Projected one-electron energies for the two equal-charge models (left); lower-energy phase-selected molecular combinations (right). The $sp^3$ example uses $a-b$ because its signed overlap is negative; the $p_x$ example uses $a+b$. These are toy electronic levels, not two-electron dissociation curves.}
+\FloatBarrier
+\section{Unequal effective charges: a model C--O $sp^3$--$sp^3$ $\sigma$ bond}
+\subsection{What effective charge means in this calculation}
+In the Slater-rule approximation for valence $(2s,2p)$ electrons, two $1s$ electrons each shield by $0.85$, while every \emph{other} $n=2$ electron shields by $0.35$. Thus, for a C valence electron ($1s^2 2s^2 2p^2$) and an O valence electron ($1s^2 2s^2 2p^4$),
+\begin{align}\label{eq:slater}
+Z_{\rm eff,C}&=6-\left[2(0.85)+3(0.35)\right]=\boxed{3.25},\\
+Z_{\rm eff,O}&=8-\left[2(0.85)+5(0.35)\right]=\boxed{4.55},\qquad
+\frac{Z_{\rm eff,O}}{Z_{\rm eff,C}}=\boxed{1.400}.\nonumber
+\end{align}
+These are crude atomic screening estimates, \emph{not} experimentally measured orbital exponents and not true nuclear charges. Our model uses them in normalized hydrogenic radial functions so that the \emph{same algebraic integrals} apply. In particular, the $2s$ and $2p$ functions have the same model energy $-Z^2/8$, whereas real self-consistent atomic $2s$ and $2p$ orbitals are not exactly degenerate.
+
+\subsection{Specify C and O hybrid functions, then calculate the matrix}
+Place C at $z=-R/2$, O at $z=+R/2$. Both hybrids face inward:
+\begin{align}\label{eq:cohybrid}
+a_C(\mathbf r)&=\frac{C_{Z_C}}{2}\e^{-Z_Cr_C/2}\big(2-Z_Cr_C+\sqrt3Z_Cz_C\big),\\
+b_O(\mathbf r)&=\frac{C_{Z_O}}{2}\e^{-Z_Or_O/2}\big(2-Z_Or_O-\sqrt3Z_Oz_O\big).\nonumber
+\end{align}
+The atomic reference energies are $E_C=-3.25^2/8=-1.3203125\ha$ and $E_O=-4.55^2/8=-2.5878125\ha$. Use the \emph{explicit model} $h=-\frac12\nabla^2-Z_C/r_C-Z_O/r_O$; then
+\begin{equation}\label{eq:cohab}
+\boxed{H_{CO}=\mel{a_C}{h_O+V_C}{b_O}=E_OS_{CO}-Z_CK_C
+=E_CS_{CO}-Z_OK_O.}
+\end{equation}
+The two forms are analytically equivalent and are checked numerically. At a representative $R=2.7a_0$, the two-center integrals and the symmetrically orthogonalized Hamiltonian yield
+\begin{equation}\label{eq:co-values}
+\begin{gathered}
+S_{CO}=0.032043,\quad H_{CC}=-2.693574\ha,\quad H_{OO}=-3.608316\ha,\quad H_{CO}=-0.202976\ha,\\
+t_{CO}=0.102116\ha,\qquad \Delta_{CO}=\varepsilon_O-\varepsilon_C=-0.915211\ha,\\
+\boxed{w_O^{(-)}=0.9880,\qquad w_C^{(-)}=0.0120\quad\text{(L\"owdin-site weights)}.}
+\end{gathered}
+\end{equation}
+This one-electron two-site model is strongly polarized toward O because the O-centered site is much deeper than the C-centered site. The \emph{formal} two-state eigenvalues are $-3.616534\ha$ and $-2.678812\ha$. These are \emph{not} the observed C--O bonding/antibonding energies.
+
+\subsection{What one must not conclude}
+Effective nuclear charge is a \emph{screening parameter inferred from a multi-electron atom}. Treating $-Z_{\rm eff}/r$ as a literal, unscreened Coulomb attraction from each center at \emph{all} distances double-counts or misrepresents the response of core and valence electrons. It omits Pauli orthogonality to occupied cores, oxygen lone pairs, electron--electron repulsion, and self-consistent rearrangement. The calculation gives an analytically well-defined \emph{polarized two-center trial-orbital model}, not a prediction that a real C--O bond has $98.8\%$ of its electron density on oxygen. Indeed the L\"owdin weight itself changes with the choice of localized basis.
+
+A physically serious C--O bond model should retain the other valence orbitals, use self-consistent screened atomic potentials or explicit all-electron $H$, and enforce the occupied core/valence subspaces. Only then can one meaningfully discuss multiple occupied $\sigma$ bonds, lone pairs, and partial charges.
+
+\section{Carbon--hydrogen: a bond-directed $sp^3$--$1s$ $\sigma$ pair}
+\subsection{The asymmetric orbital shapes}
+Now keep C at $-R/2$ but replace O's valence $sp^3$ hybrid by hydrogen's $1s$ orbital. With the same simplified charge parameters $Z_C=3.25$ and $Z_H=1$, define
+\begin{equation}\label{eq:chhybrid}
+\boxed{a_C=\frac{C_{3.25}}2\e^{-3.25r_C/2}\big(2-3.25r_C+\sqrt3(3.25)z_C\big),\quad
+b_H=\frac1{\sqrt\pi}\e^{-r_H}.}
+\end{equation}
+The carbon orbital has $s/p$ hybrid angular structure and an $n=2$ radial node; the hydrogen orbital is spherical, nodeless, and decays with exponent $1$, rather than $3.25/2$. The resulting $\sigma$ overlap is asymmetric, and the oxygen-style simplification $H_{AA}=H_{BB}$ is no longer valid.
+
+We can still use the exact identity $H_{CH}=\langle a_C\lvert h_H+V_C\rvert b_H\rangle$ because the H $1s$ function is an eigenstate of $h_H=T-1/r_H$:
+\begin{equation}\label{eq:chsplit}
+\boxed{H_{CH}=E_HS_{CH}-Z_CK_C=E_CS_{CH}-Z_HK_H,\quad E_H=-\tfrac12,\quad E_C=-\frac{3.25^2}{8}.}
+\end{equation}
+The two one-electron contributions $E_HS$ and $-Z_CK_C$ have distinct origins: overlap with the isolated hydrogen state and cross attraction to the modeled carbon center. The second expression is an independent Hermiticity check.
+
+At a representative $R=2.1a_0$ the same numerical quadrature gives
+\begin{equation}\label{eq:ch-values}
+\begin{gathered}
+S_{CH}=0.109688,\quad H_{CC}=-1.694414\ha,\quad H_{HH}=-1.975676\ha,\quad H_{CH}=-0.338150\ha,\\
+t_{CH}=0.138534\ha,\qquad\Delta_{CH}=\varepsilon_H-\varepsilon_C=-0.282969\ha,\\
+\boxed{w_H^{(-)}=0.8573,\quad w_C^{(-)}=0.1427\quad\text{(in this literal screened-Coulomb model)}.}
+\end{gathered}
+\end{equation}
+The electronic eigenvalues in this particular projection are $-2.017864\ha$ and $-1.621835\ha$.
+
+\subsection{Construct the two-electron bond, not just the one-electron MO}
+The calculation above describes an \emph{effective one-electron} orbital polarization. A C--H \emph{electron-pair} bond requires two electrons and the correct antisymmetrized spin state. With $a=a_C$ and $b=b_H$, the covalent singlet and both ionic singlets may be written as
+\begin{equation}\label{eq:chcovionic}
+\begin{aligned}
+\ket{C;S=0}&=\frac{\ket{ab}+\ket{ba}}{\sqrt{2(1+S_{CH}^2)}}\ket{\chi_s},\\
+\ket{I_C;S=0}&=\ket{aa}\ket{\chi_s},\qquad
+\ket{I_H;S=0}=\ket{bb}\ket{\chi_s}.
+\end{aligned}
+\end{equation}
+A polarized spin-coupled VB singlet may then be expressed as $\ket{\Psi}=c_C\ket{C}+c_{I_C}\ket{I_C}+c_{I_H}\ket{I_H}$. These three configurations are generally \emph{nonorthogonal}, with $\langle I_C|I_H\rangle=S_{CH}^2$ and $\langle I_C|C\rangle=\langle I_H|C\rangle=\sqrt2S_{CH}/\sqrt{1+S_{CH}^2}$. One should therefore solve a $3\times3$ generalized eigenproblem using the \emph{two-electron} Coulomb matrix elements rather than infer electron-pair charges from the lower one-electron eigenvector. In real C--H chemistry the other C valence electrons and its occupied core modify these configuration energies substantially. The covalent triplets have antisymmetric spatial parts and cannot mix with ionic singlets through a spin-independent Hamiltonian.
+
+\subsection{A revealing failure of the literal screened-Coulomb potential}
+The last result is \emph{intentionally retained} because it exposes a model limitation rather than a chemical truth. The crude summed screened potential $-3.25/r_C-1/r_H$ actually makes the H-centered \emph{site} more favorable at this separation, even though the \emph{isolated} model energies satisfy $E_C=-1.3203<E_H=-0.5$. The H $1s$ orbital feels an unrealistically strong long-range attraction toward the effective C center; the model does not represent carbon core exclusion, neutral-atom screening, or the self-consistent electronic density. It predicts a misleading polarity for a real C--H bond.
+
+For comparison, an \emph{independently specified effective tight-binding model} that instead uses the isolated site energies $E_C=-1.3203$, $E_H=-0.5$ and a hopping of $0.1385\ha$ would place approximately $97.4\%$ of its lower orthogonalized-orbital weight on C. That \emph{alternative} is not the projected matrix of Eq.~\eqref{eq:charge-H}; the change in result shows why choosing a physically valid effective Hamiltonian matters as much as choosing orbitals. Neither number is a reliable C--H partial charge. A quantitative C--H example requires occupied-core exclusion and a many-electron model.
+
+\plot{12_polarization_carbon_oxygen_ch}{0.97}{The model two-center overlap and lower-eigenstate L\"owdin-site weight as $R$ varies. For C--O, site B is O; for C--H, site B is H. The contrasting polarization illustrates \emph{the model assumptions}, not an experimental charge assignment.}
+\plot{13_heteronuclear_orbital_sections}{0.97}{Signed bond-axis cuts of the atom-centered trial orbitals at the representative C--O and C--H separations. A narrow hybrid, diffuse spherical orbital, and radial sign changes can be seen directly.}
+
+\subsection{What to add for a useful chemical calculation}
+To upgrade this treatment toward chemically quantitative $sp^3$--$sp^3$ or $sp^3$--$1s$ bonding:
+\begin{itemize}
+\item Include a closed-shell core and \emph{orthogonalize} valence functions to it, or use a core-respecting pseudopotential.
+\item Distinguish the effective long-range neutral-atom potential from the near-nucleus $-Z/r$ field; a single screened charge is not an all-radius potential.
+\item Include all occupied valence orbitals and spin coupling, rather than treating a single bonding pair as an isolated one-electron diatomic molecule.
+\item Compare a self-consistent RHF occupied space, its localized IBO rotation, and a spin-coupled or active-space correlated description.
+\item Compute dissociation energies from the \emph{many-electron total energy} with a stated fragment reference, not from $2t$ or from the lowest MO energy.
+\end{itemize}
+
+\section{Synthesis: what each calculation taught us}
+\begin{center}
+\small
+\begin{tabular}{p{.23\linewidth}p{.32\linewidth}p{.35\linewidth}}
+\toprule
+\textbf{Model} & \textbf{Exact or controlled statement} & \textbf{Limitation}\\\midrule
+Heitler--London $\mathrm H_2$ & Correct fermionic symmetries and variational covalent $E_s,E_t$ in a two-configuration span. & Excludes independent ionic correlation and orbital relaxation.\\
+Orthogonal $L/R$ sites & Exact $E_\pm=E_0\mp t$ for a specified two-state Hamiltonian. & $t$ must be supplied or derived from a spatial model.\\
+Double-delta well & Exact one-electron bound states and finite-$R$ parity splitting. & Not Coulomb; interacting two-electron continuum is not solved.\\
+Gaussian in delta well & Rigorous variational upper bounds and fully analytic matrix elements. & Gaussian is not an isolated-well eigenfunction.\\
+Hubbard dimer & Exact two-electron spectrum; controlled $-4t^2/U$ superexchange at $t\ll U$. & Truncates spatial orbitals; $U,t$ depend on projection.\\
+Hydrogenic $2s/2p$ $\sigma,\pi$ & Exact atomic basis functions; accurate two-center \emph{one-electron} projection integrals. & Excited, artificial $Z=1$ atoms and incomplete two-electron binding model.\\
+C--O and C--H models & Reproducible overlap, hopping, site polarization within specified screened-Coulomb trial models. & Missing multi-electron screening, core exclusion, and charge self-consistency.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\highlight{\textbf{Final conceptual summary.} The sequence is \emph{atomic eigenfunctions $\to$ overlaps and Hamiltonian matrix elements $\to$ orthogonalized tunneling or localized orbitals $\to$ exchange-symmetric many-electron states $\to$ correlated singlet/triplet energetics}. Localization by itself does not make the hopping negligible; it makes chemical structure easier to interpret. Perturbation theory is controlled only after specifying the unperturbed spectrum, its degenerate \emph{fermionic} sector, and the small interaction that couples it to other sectors.}
+
+\clearpage
+\appendix
+\section{The $1s$ two-center Coulomb integrals}\label{app:1s}
+For $\mathrm H_2^+$ use the prolate spheroidal coordinates $\mu=(r_A+r_B)/R$, $\nu=(r_A-r_B)/R$, $\varphi$ around the internuclear axis, with $1\le\mu<\infty$ and $-1\le\nu\le1$,
+\begin{equation}\label{eq:prolate}
+r_A=\tfrac R2(\mu+\nu),\quad r_B=\tfrac R2(\mu-\nu),\quad
+z=\tfrac R2\mu\nu,\quad d^3r=\frac{R^3}{8}(\mu^2-\nu^2)\,d\mu\,d\nu\,d\varphi.
+\end{equation}
+Because $ab=\pi^{-1}\e^{-R\mu}$,
+\begin{align}
+S&=\frac{R^3}{4}\int_1^\infty\!\e^{-R\mu}\,d\mu\int_{-1}^1\!(\mu^2-\nu^2)\,d\nu
+=\e^{-R}\left(1+R+\tfrac13R^2\right),\\
+K_N&=\int ab/r_A\,d^3r
+=R^2\int_1^\infty\mu\e^{-R\mu}\,d\mu=(1+R)\e^{-R}.
+\end{align}
+For $J_N=\int |a|^2/r_B\,d^3r$, use the angular average of the inverse distance from a spherical charge distribution: $\frac{1}{4\pi}\int d\Omega\,|\mathbf r-\mathbf R|^{-1}=1/\max(r,R)$. This gives
+\begin{equation}
+J_N(R)=\frac4R\int_0^R r^2\e^{-2r}\,dr+4\int_R^\infty r\e^{-2r}\,dr
+=\frac{1-(1+R)\e^{-2R}}R.
+\end{equation}
+Every $1s$ integral is now analytic; the only approximations in the $\mathrm H_2^+$ curves are the \emph{restriction to the two fixed atomic orbitals} and the clamped-nuclei model.
+
+\section{Double-delta derivations and Gaussian integrals}\label{app:delta}
+For $V(x)=-g\delta(x-x_A)$, integrate the one-dimensional Schr\"odinger equation across $x_A$ to get $\psi'(x_A^+)-\psi'(x_A^-)=-2mg\psi(x_A)/\hbar^2$. Matching the even and odd double-exponential ansatz at both sites yields $q_\pm=\kappa(1\pm\e^{-q_\pm R})$. At $R>1/\kappa$ the odd positive root is nonzero; below threshold, the only $q_-=0$ solution is non-normalizable. For each decay constant, the identity
+\begin{equation}
+\int_{-\infty}^\infty\e^{-q|x+R/2|}\e^{-q|x-R/2|}\,dx
+=\e^{-qR}(R+q^{-1})
+\end{equation}
+gives the exact $N_\pm$ in Eq.~\eqref{eq:delta-exact}.
+
+For normalized Gaussian $g_A,g_B$, differentiation gives $g_B''=[(x-R/2)^2/(4\sigma^4)-1/(2\sigma^2)]g_B$. The product identity
+\begin{equation}
+g_A(x)g_B(x)=\frac{\e^{-R^2/(8\sigma^2)}}{\sqrt{2\pi}\sigma}\e^{-x^2/(2\sigma^2)}
+\end{equation}
+leads to
+\begin{equation}
+\mel{g_A}{T}{g_B}=S_G\left(\frac1{8\sigma^2}-\frac{R^2}{32\sigma^4}\right),\quad
+\mel{g_A}{-g\delta(x\pm R/2)}{g_B}=-\frac g{\sqrt{2\pi}\sigma}\e^{-R^2/(4\sigma^2)}.
+\end{equation}
+This proves Eq.~\eqref{eq:gauss-mat} without numerical quadrature. The variational minimum of an even or odd superposition remains an upper bound on the exact \emph{lowest state of that parity}, provided such a discrete state exists.
+
+\section{Computing hybrid $\sigma$/$\pi$ integrals in prolate coordinates}\label{app:prolate}
+The ingredients of all four worked 3D examples are normalized \emph{one-electron} orbitals of the form
+\begin{equation}
+a=P_A(r_A,z_A,\rho,\varphi)\e^{-\lambda_A r_A},\quad
+b=P_B(r_B,z_B,\rho,\varphi)\e^{-\lambda_B r_B},\quad
+\lambda_{2s,2p}=Z/2,\quad\lambda_{1s}=Z.
+\end{equation}
+Here $P$ is the full normalizing polynomial including $C_Z$ (and, for $p_x$, $\rho\cos\varphi$). With Eq.~\eqref{eq:prolate},
+\begin{equation}\label{eq:general-prolate}
+\begin{split}
+\int abF\,d^3r={\frac{R^3}{8}}\int_1^\infty d\mu\int_{-1}^1d\nu\int_0^{2\pi}d\varphi\,&(\mu^2-\nu^2)P_AP_B\,F\\[-2pt]
+&\times\exp\left[-\tfrac R2\big((\lambda_A+\lambda_B)\mu+(\lambda_A-\lambda_B)\nu\big)\right],
+\end{split}
+\end{equation}
+where $F=1$, $1/r_A$, or $1/r_B$. For a $\sigma$--$\sigma$ pair the integrand is independent of $\varphi$, giving a factor $2\pi$. For a $p_x$--$p_x$ pair, $P_AP_B\propto\rho^2\cos^2\varphi$ and the azimuthal integral is $\pi$, i.e., half the $\sigma$ factor. The diagonal $|a|^2$ and $|b|^2$ integrals use the same formula with $a=b$ on the appropriate center.
+
+For numerical accuracy, the plotted calculations transform $\mu=1+u/c$ with $c=(\lambda_A+\lambda_B)R/2$, factor out $\e^{-c}$, and use 90-point Gauss--Laguerre quadrature in $u\in[0,\infty)$ together with 110-point Gauss--Legendre quadrature in $\nu\in[-1,1]$. This integrates the full radial tails, avoids a finite Cartesian box, and handles the nuclear $1/r$ factors by retaining the prolate Jacobian. Using the exact atomic eigenvalue identities, the independent evaluations
+\begin{equation}
+E_BS-Z_AK_A\stackrel{!}{=}E_AS-Z_BK_B
+\end{equation}
+agree to numerical precision in all tabulated cases. Norm checks give $\braket aa=\braket bb=1$ to the precision quoted.
+
+\begin{table}[htbp]\centering\small
+\caption{Illustrative projected one-electron results (Hartree energies, $a_0$ separations). These are mathematical toy-model values, not quantitative bond predictions.}
+\begin{tabular}{lrrrrr}
+\toprule
+Orbitals & $R$ & $S$ & $H_{AB}$ & $t_{\rm orth}$ & $w_B^{(-)}$\\\midrule
+$sp^3$--$sp^3$, $Z=1$ & 5.0 & $-0.095004$ & $+0.003010$ & 0.022968 & 0.5000\\
+$p_x$--$p_x$, $Z=1$ & 5.0 & $+0.578015$ & $-0.186829$ & 0.034638 & 0.5000\\
+C--O $sp^3$--$sp^3$ & 2.7 & $+0.032043$ & $-0.202976$ & 0.102116 & 0.9880\\
+C--H $sp^3$--$1s$ & 2.1 & $+0.109688$ & $-0.338150$ & 0.138534 & 0.8573\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Two-electron direct and exchange integrals for arbitrary hybrids}\label{app:twoelectron}
+For any two normalized real orbitals $a,b$ with $S=\langle a|b\rangle$, and a symmetric two-electron Hamiltonian $H=h(1)+h(2)+r_{12}^{-1}+V_{NN}$,
+\begin{align}
+D&=H_{aa}+H_{bb}+J_{ee}+V_{NN},\\
+X&=S(H_{ab}+H_{ba})+K_{ee}+V_{NN}S^2,\\
+J_{ee}&=\int d^3r_1\int d^3r_2\frac{|a(\mathbf r_1)|^2|b(\mathbf r_2)|^2}{|\mathbf r_1-\mathbf r_2|},\\
+K_{ee}&=\int d^3r_1\int d^3r_2\frac{a(\mathbf r_1)b(\mathbf r_1)a(\mathbf r_2)b(\mathbf r_2)}{|\mathbf r_1-\mathbf r_2|}.
+\end{align}
+For the $sp^3$ $\sigma$ case, substitute $a=a_\sigma$ and $b=b_\sigma$ from Eq.~\eqref{eq:sigma-hybrids}. For the $p_x$ $\pi$ case, the product at each electron coordinate is
+\begin{equation}
+a_\pi(\mathbf r)b_\pi(\mathbf r)
+=C_1^2x^2\exp[-(r_A+r_B)/2],
+\end{equation}
+and hence $K_{ee,\pi}$ has the explicit integrand
+\begin{equation}
+K_{ee,\pi}=C_1^4\iint \frac{x_1^2x_2^2\exp[-(r_{1A}+r_{1B}+r_{2A}+r_{2B})/2]}{r_{12}}\,d^3r_1d^3r_2.
+\end{equation}
+The two-electron kernels are \emph{not} evaluated by the one-electron $H_{ab}=E_BS-Z_AK_A$ formula. For numerical work, the direct $J_{ee}$ can be evaluated as the electrostatic interaction of two orbital densities; the exchange $K_{ee}$ can be evaluated as the Coulomb self-energy of the \emph{transition density} $\rho_{ab}=ab$, e.g., by solving Poisson's equation for this signed source and integrating $\int\rho_{ab}\Phi_{ab}$. Gaussian integral expansion or elliptical-coordinate methods provide other routes. In this edition we report \emph{one-electron} numerical $\sigma/\pi$ projections and give the complete Heitler--London \emph{two-electron} expressions without inventing uncomputed binding curves.
+
+\section{Reproducibility, conventions, and reading}
+All numerical figures are generated by the companion \texttt{make\_figures.py} script. The $\mathrm H_2^+$ example uses analytic fixed-$1s$ integrals; double-delta finite-$R$ roots are found by bracketed numerical root solving; Gaussian widths are variationally optimized; hydrogenic $2s/2p$ two-center integrals use deterministic Gauss--Laguerre and Gauss--Legendre quadrature. Numeric outputs are recorded in \texttt{numerical\_results.json}. Only the \emph{projected one-electron} integrals are numerically evaluated for the higher-orbital examples. The $\sigma$/$\pi$ charge models deliberately neglect core-orthogonalization and electronic self-consistency.
+
+For background and conventions: Heitler and London, \emph{Wechselwirkung neutraler Atome und hom\"oopolar Bindung nach der Quantenmechanik}, Z. Phys. \textbf{44}, 455--472 (1927); A. Szabo and N. Ostlund, \emph{Modern Quantum Chemistry} (Dover); P. W. Atkins and R. Friedman, \emph{Molecular Quantum Mechanics}; J. C. Slater, \emph{Atomic Shielding Constants}, Phys. Rev. \textbf{36}, 57--64 (1930). Hydrogenic orbital normalization conventions are cross-checked against \href{https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Supplemental_Modules_(Physical_and_Theoretical_Chemistry)/Quantum_Mechanics/09._The_Hydrogen_Atom/Chapter_7.__The_Hydrogen_Atom}{Chemistry LibreTexts, Hydrogen Atom: Orbital Formulas}; the Slater-rule screened-charge arithmetic is a pedagogical estimate, not a modern atomic calculation.
+\end{document}
