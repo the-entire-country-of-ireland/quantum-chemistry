@@ -3,14 +3,12 @@ from __future__ import annotations
 import numpy as np
 import plotly.graph_objects as go
 from types import SimpleNamespace
-from .atomic_orbitals import _surface_level_for_probability, _sample_probability_points
-from .molecular_hf import decomposition
-from .molecular_geometry import BOHR_PER_ANGSTROM
+from .orbital_sampling import _surface_level_for_probability, _sample_probability_points
 
 BLUE, RED = '#2878b5', '#d34a4a'
 
 
-def grid_for_orbital(mol, c, extent_bohr=6., grid_points=51):
+def grid_for_orbital(mol, c, extent_bohr=6., grid_points=100):
     if grid_points<25:
         raise ValueError('grid_points must be >= 25')
     axis=np.linspace(-extent_bohr,extent_bohr,grid_points)
@@ -37,7 +35,7 @@ def _draw_surface(figure,grid,values,coverage,name='',opacity=0.55, legend=True)
 
 
 def plot_molecular_orbital(result, mo_index, mode='points',
-                           extent_bohr=None,grid_points=51,
+                           extent_bohr=None,grid_points=70,
                            point_count=30000,probability_coverage=.95,
                            seed=12345,coefficients_ao=None):
     """Plot a complete canonical or localized MO as a signed surface or |ψ|² cloud.
@@ -91,6 +89,7 @@ def plot_molecular_orbital(result, mo_index, mode='points',
 
 def show_decomposition_bars(result,mo_index,representation='hybrid',top=15,
                             coefficients_ao=None):
+    from .molecular_hf import decomposition
     data=decomposition(result,mo_index,representation,coefficients_ao)
     inds=np.argsort(data['weights'])[::-1][:top][::-1]
     # Plot coefficients are signed, bars are colored by coefficient sign.
@@ -124,7 +123,7 @@ def _add_molecular_skeleton(fig, result, seed=None, *, atom_size=5):
 
 
 def plot_local_ingredients(result, projection, selection, *, seed=None,
-                           extent_bohr=7.0,grid_points=41,
+                           extent_bohr=7.0,grid_points=70,
                            amplitude_cutoff=0.045,opacity=0.40,
                            overlay_total=False):
     """Draw *individual signed AO/hybrid terms*, not atom-summed contributions.
@@ -185,7 +184,7 @@ def plot_local_ingredients(result, projection, selection, *, seed=None,
 
 def plot_combined_with_bonds(result,mo_index,*,seed=None,coefficients_ao=None,
                              mode='surface',extent_bohr=7.0,
-                             grid_points=41,probability_coverage=.95,
+                             grid_points=70,probability_coverage=.95,
                              point_count=30000):
     """Full localized MO on the same aligned coordinate frame."""
     fig=plot_molecular_orbital(

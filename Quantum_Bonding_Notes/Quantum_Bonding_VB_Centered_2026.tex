@@ -54,7 +54,7 @@ Fix two protons $A$ and $B$ separated by $R$ (Born--Oppenheimer approximation), 
 \begin{equation}\label{eq:physicalH2}
 \hat H=\sum_{i=1}^{2}\left[-\tfrac12\nabla_i^2-\frac1{r_{iA}}-\frac1{r_{iB}}\right]+\frac1{r_{12}}+\frac1R.
 \end{equation}
-It commutes with the operator $P_{12}$ exchanging \emph{both} electron coordinates and spins. There is no separate attraction that belongs to ``electron 1'' or ``electron 2.'' That observation repairs an otherwise tempting but unphysical decomposition such as $H_0=-E\delta_{x_1,L}-E\delta_{x_2,R}$, which distinguishes electron labels.
+It commutes with the operator $P_{12}$ exchanging \emph{both} electron coordinates and spins. There is no separate attraction that belongs to ``electron 1'' or ``electron 2.'' 
 
 Let $a(\mathbf r)=\pi^{-1/2}\e^{-r_A}$ and $b(\mathbf r)=\pi^{-1/2}\e^{-r_B}$ be normalized hydrogenic $1s$ orbitals. Their overlap is $S(R)=\braket a b$; it is nonzero at finite $R$. The two \emph{labeled spatial assignments} are
 \begin{equation}
@@ -92,9 +92,9 @@ There is a terminological trap: $X=\mel{ab}{H}{ba}$ is an \emph{exchange matrix 
 \subsection{The covalent Heitler--London state versus a doubly occupied MO}
 Define a normalized bonding orbital $g=(a+b)/\sqrt{2(1+S)}$. Restricted closed-shell HF uses $g(1)g(2)\chi_s$. Its spatial product contains \emph{both} covalent terms $ab+ba$ and ionic terms $aa+bb$, with constrained coefficients. By contrast, Eq.~\eqref{eq:HLstates} contains only the covalent assignment pair. At dissociation, the latter naturally gives one electron at each nucleus, whereas a single closed-shell bonding MO retains undesired ionic weight. The distinction is between \emph{many-electron wavefunctions}, not merely two orbital drawing conventions.
 
-\section{Overlap, hopping, and degenerate perturbation theory}
+\section{Overlap and hopping}
 \subsection{Two position states: the bare minimum model}
-For one electron, begin with \emph{orthonormal} discrete states $\{\ket L,\ket R\}$ representing sites, not spatially continuous delta functions. Choose two normalized, nonorthogonal \emph{atomic trial vectors}
+For one electron, begin with \emph{orthonormal} discrete states $\{\ket L,\ket R\}$ representing sites. Choose two normalized, nonorthogonal \emph{atomic trial vectors}
 \begin{equation}\label{eq:toy-epsilon}
 \ket a=\frac{\ket L+\epsilon\ket R}{\sqrt{1+\epsilon^2}},\qquad
 \ket b=\frac{\epsilon\ket L+\ket R}{\sqrt{1+\epsilon^2}},\qquad
@@ -117,10 +117,7 @@ E_\pm=\frac{\alpha\pm\beta}{1\pm S},\quad
 \end{equation}
 This is the hopping coefficient after symmetric (L\"owdin) orthogonalization. In particular $H=E_0 I$ gives $\beta=E_0S\neq0$ but $t_{\rm orth}=0$. The ordinary matrix element $\beta$ is therefore \emph{not} itself the observable tunneling amplitude. For unequal sites, one must retain both diagonal energies and solve the generalized eigenvalue problem; the equal-site splitting formula does not apply directly.
 
-\subsection{Where perturbation theory does and does not enter}
-Standard degenerate perturbation theory starts with \emph{one} self-adjoint $H_0$ whose eigenstates span an orthonormal degenerate eigenspace $P$, followed by $H(\lambda)=H_0+\lambda V$. First-order corrections come from diagonalizing $PVP$. For two electrons, $P$ must be a subspace of the \emph{antisymmetric} spin-space Hilbert space, and $H_0,V$ must respect exchange symmetry. The two-center Coulomb or double-delta calculations below instead use exact isolated-atom orbitals as a \emph{finite variational basis} for a separation-dependent molecular Hamiltonian. Their large-$R$ weak-coupling limit has a perturbative interpretation, but the finite-$R$ generalized eigenproblem is a Rayleigh--Ritz calculation, not automatically a controlled power series in $R^{-1}$.
-
-\section{$\mathrm H_2^+$: physical Coulomb integrals and the useful split $H=H_B+V_A$}
+\section{$\mathrm H_2^+$: physical Coulomb integrals and the decomposition $H=H_B+V_A$}
 Before returning to two electrons, it helps to derive $t(R)$ for one electron using a real Coulomb potential. Write
 \begin{equation}\label{eq:h2plus-split}
 \hat h=-\tfrac12\nabla^2-\frac1{r_A}-\frac1{r_B}

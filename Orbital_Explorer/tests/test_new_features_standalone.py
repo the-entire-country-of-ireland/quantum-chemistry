@@ -16,13 +16,13 @@ def extract(path,name,namespace):
 
 
 def test_water_angle_helper():
-    angle=extract(ROOT/'pages/molecular.py','bond_angles',{'np':np,'pd':__import__('pandas')})
+    angle=extract(ROOT/'qchem_analysis/fixed_geometry_data.py','bond_angles',{'np':np,'MolecularSeed':object})
     mol=Chem.AddHs(Chem.MolFromSmiles('O'))
     seed=SimpleNamespace(rdkit_mol=mol,symbols=['O','H','H'])
     theta=np.deg2rad(104.478)
     xyz=np.array([[0.,0.,0.],[1.,0.,0.],[np.cos(theta),np.sin(theta),0.]])
     tab=angle(seed,xyz)
-    assert len(tab)==1 and abs(tab['Degrees (°)'].iloc[0]-104.478)<.001
+    assert len(tab)==1 and abs(tab[0]['Degrees (°)']-104.478)<.001
 
 
 

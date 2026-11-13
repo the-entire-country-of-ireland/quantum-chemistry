@@ -1,0 +1,418 @@
+{
+  "H₂ · hydrogen": {
+    "smiles": "[H][H]",
+    "symbols": [
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.3707,
+        0.0,
+        0.0
+      ],
+      [
+        0.3707,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "BeH₂ · beryllium hydride": {
+    "smiles": "[H][Be][H]",
+    "symbols": [
+      "Be",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        -1.326,
+        0.0,
+        0.0
+      ],
+      [
+        1.326,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "HF · hydrogen fluoride": {
+    "smiles": "F",
+    "symbols": [
+      "F",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.9168,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "CH₄ · methane": {
+    "smiles": "C",
+    "symbols": [
+      "C",
+      "H",
+      "H",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.627579743,
+        0.627579743,
+        0.627579743
+      ],
+      [
+        0.627579743,
+        -0.627579743,
+        -0.627579743
+      ],
+      [
+        -0.627579743,
+        0.627579743,
+        -0.627579743
+      ],
+      [
+        -0.627579743,
+        -0.627579743,
+        0.627579743
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "H₂O · water": {
+    "smiles": "O",
+    "symbols": [
+      "O",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        -0.757540798,
+        0.0,
+        0.587079637
+      ],
+      [
+        0.757540798,
+        0.0,
+        0.587079637
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "NH₃ · ammonia": {
+    "smiles": "N",
+    "symbols": [
+      "N",
+      "H",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.937529574,
+        0.0,
+        0.38102795
+      ],
+      [
+        -0.468764787,
+        0.811924428,
+        0.38102795
+      ],
+      [
+        -0.468764787,
+        -0.811924428,
+        0.38102795
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "CO₂ · carbon dioxide": {
+    "smiles": "O=C=O",
+    "symbols": [
+      "O",
+      "C",
+      "O"
+    ],
+    "coordinates_angstrom": [
+      [
+        -1.16,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.16,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  },
+  "C₂H₄ · ethene": {
+    "smiles": "C=C",
+    "symbols": [
+      "C",
+      "C",
+      "H",
+      "H",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.667213052,
+        0.030164301,
+        -0.000822792
+      ],
+      [
+        0.667210969,
+        -0.030164014,
+        0.000823239
+      ],
+      [
+        -1.268124894,
+        -0.860367224,
+        0.154589069
+      ],
+      [
+        -1.184928835,
+        0.971270234,
+        -0.157613565
+      ],
+      [
+        1.268126031,
+        0.860365106,
+        -0.154587302
+      ],
+      [
+        1.184929781,
+        -0.971268403,
+        0.157611351
+      ]
+    ],
+    "source": "precomputed MMFF94 geometry (approximate; fixed at runtime)"
+  },
+  "C₂H₂ · acetylene": {
+    "smiles": "C#C",
+    "symbols": [
+      "C",
+      "C",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.530917072,
+        0.050668114,
+        -0.331926817
+      ],
+      [
+        0.530916646,
+        -0.050668146,
+        0.218496786
+      ],
+      [
+        -1.473768056,
+        0.140649571,
+        -0.820674795
+      ],
+      [
+        1.473768481,
+        -0.140649539,
+        0.707242583
+      ]
+    ],
+    "source": "precomputed MMFF94 geometry (approximate; fixed at runtime)"
+  },
+  "CH₂O · formaldehyde": {
+    "smiles": "C=O",
+    "symbols": [
+      "C",
+      "O",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.012263519,
+        0.00130244,
+        -2.6041e-05
+      ],
+      [
+        1.205518309,
+        -0.128015826,
+        0.002565649
+      ],
+      [
+        -0.695029189,
+        -0.86331646,
+        -0.002697311
+      ],
+      [
+        -0.498225601,
+        0.990029847,
+        0.000157702
+      ]
+    ],
+    "source": "precomputed MMFF94 geometry (approximate; fixed at runtime)"
+  },
+  "CH₃OH · methanol": {
+    "smiles": "CO",
+    "symbols": [
+      "C",
+      "O",
+      "H",
+      "H",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.370676948,
+        -0.006782096,
+        0.018893056
+      ],
+      [
+        0.948761226,
+        -0.019710073,
+        0.531941285
+      ],
+      [
+        -0.513429919,
+        -0.864076233,
+        -0.643519143
+      ],
+      [
+        -1.076058608,
+        -0.070524908,
+        0.850755722
+      ],
+      [
+        -0.540307497,
+        0.923145195,
+        -0.529361613
+      ],
+      [
+        1.551711746,
+        0.037948115,
+        -0.228709308
+      ]
+    ],
+    "source": "precomputed MMFF94 geometry (approximate; fixed at runtime)"
+  },
+  "C₂H₆ · ethane": {
+    "smiles": "CC",
+    "symbols": [
+      "C",
+      "C",
+      "H",
+      "H",
+      "H",
+      "H",
+      "H",
+      "H"
+    ],
+    "coordinates_angstrom": [
+      [
+        0.754997877,
+        -0.001465518,
+        0.039443169
+      ],
+      [
+        -0.754998023,
+        0.0014651,
+        -0.039443215
+      ],
+      [
+        1.130741213,
+        1.003852677,
+        0.251983413
+      ],
+      [
+        1.188675912,
+        -0.338403975,
+        -0.90682155
+      ],
+      [
+        1.097118102,
+        -0.672079766,
+        0.833326723
+      ],
+      [
+        -1.188675753,
+        0.338405449,
+        0.906821141
+      ],
+      [
+        -1.130741608,
+        -1.003852592,
+        -0.251982943
+      ],
+      [
+        -1.09711772,
+        0.672078625,
+        -0.833326737
+      ]
+    ],
+    "source": "precomputed MMFF94 geometry (approximate; fixed at runtime)"
+  },
+  "N₂ · nitrogen": {
+    "smiles": "N#N",
+    "symbols": [
+      "N",
+      "N"
+    ],
+    "coordinates_angstrom": [
+      [
+        -0.54885,
+        0.0,
+        0.0
+      ],
+      [
+        0.54885,
+        0.0,
+        0.0
+      ]
+    ],
+    "source": "approximate fixed gas-phase reference geometry (not geometry-optimized at runtime)"
+  }
+}
